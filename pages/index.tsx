@@ -145,61 +145,62 @@ const Home = () => {
     const ignoreSemester = (semester: Semester) => dispatch(new IgnoreSemester(semester))
 
     return (
-        <div className="container">
+        <div className="container vh-100">
             <div className="text-center">
                 <h1>Academic Grade Calculator</h1>
                 <p>Created by Noam Zaks</p>
             </div>
             <Row>
-                <div className="col-sm">
-                    {state.semesters.map(semester => {
-                        let pointSum = 0, gradeSum = 0, courseCount = 0
+                <div className="col-sm h-100">
+                    <div className="overflow-auto px-3" style={{ height: "80vh" }}>
+                        {state.semesters.map(semester => {
+                            let pointSum = 0, gradeSum = 0, courseCount = 0
 
-                        return (
-                            <Card key={semester.name} className={"mb-2" + (semester.ignored ? " text-muted" : "")}>
-                                <Card.Header>
-                                    <h3 className="text-center">{semester.name}</h3>
-                                </Card.Header>
-                                <Card.Body>
-                                    <Table striped hover>
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Points</th>
-                                                <th>Grade</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className={semester.ignored ? " text-muted" : ""}>
-                                            {semester.courses.map(course => {
-                                                if (!course.ignored) {
-                                                    pointSum += course.points
-                                                    gradeSum += course.grade * course.points
-                                                    courseCount++
-                                                }
+                            return (
+                                <Card key={semester.name} className={"mb-2" + (semester.ignored ? " text-muted" : "")}>
+                                    <Card.Header>
+                                        <h3 className="text-center">{semester.name}</h3>
+                                    </Card.Header>
+                                    <Card.Body>
+                                        <Table striped hover>
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Points</th>
+                                                    <th>Grade</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className={semester.ignored ? " text-muted" : ""}>
+                                                {semester.courses.map(course => {
+                                                    if (!course.ignored) {
+                                                        pointSum += course.points
+                                                        gradeSum += course.grade * course.points
+                                                        courseCount++
+                                                    }
 
-                                                return (
-                                                    <tr key={course.name} className={course.ignored ? " text-muted" : ""}>
-                                                        <td><Button variant="secondary" className="btn-sm" onClick={() => ignoreCourse(course)}>{course.name}</Button></td>
-                                                        <td>{course.points}</td>
-                                                        <td>{course.grade}</td>
-                                                    </tr>
-                                                )
-                                            })}
-                                            <tr>
-                                                <th>Total</th>
-                                                <th>{pointSum}</th>
-                                                <th>{(gradeSum / pointSum).toPrecision(4) || ""}</th>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </Card.Body>
-                                <Card.Footer className="text-center">
-                                    <Button variant="secondary" onClick={() => ignoreSemester(semester)}>Ignore</Button>
-                                </Card.Footer>
-                            </Card>
-                        )
-                    })}
-                    <AddCourseModal callback={add} />
+                                                    return (
+                                                        <tr key={course.name} className={course.ignored ? " text-muted" : ""}>
+                                                            <td><Button variant="secondary" className="btn-sm" onClick={() => ignoreCourse(course)}>{course.name}</Button></td>
+                                                            <td>{course.points}</td>
+                                                            <td>{course.grade}</td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                                <tr>
+                                                    <th>Total</th>
+                                                    <th>{pointSum}</th>
+                                                    <th>{(gradeSum / pointSum).toPrecision(4) || ""}</th>
+                                                </tr>
+                                            </tbody>
+                                        </Table>
+                                    </Card.Body>
+                                    <Card.Footer className="text-center">
+                                        <Button variant="secondary" onClick={() => ignoreSemester(semester)}>Ignore</Button>
+                                    </Card.Footer>
+                                </Card>
+                            )
+                        })}
+                    </div>
                 </div>
                 <div className="col-sm">
                     <h2 className="text-center">Additional Data</h2>
@@ -218,6 +219,7 @@ const Home = () => {
                     <div className="w-100 d-flex">
                         <input type="file" className="d-none" ref={fileInput} onChange={open} />
                         <Button variant="success" className="mr-auto" onClick={() => fileInput.current.click()}>Open</Button>
+                        <AddCourseModal callback={add} />
                         <a className="btn btn-success" download="grades.json" ref={saveButton}>Save</a>
                     </div>
                 </div>

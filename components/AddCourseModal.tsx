@@ -22,11 +22,10 @@ const AddCourseModal: React.FC<Props> = ({ callback }) => {
     }
 
     return (
-        <div>
-            <div className="text-center">
-                <Button className="mb-2" onClick={open}>Add</Button>
+        <div className="d-inline mr-auto">
+            <div className="text-center d-inline">
+                <Button onClick={open}>Add</Button>
             </div>
-            <br />
 
             <Form>
                 <Modal show={show} onHide={close}>
